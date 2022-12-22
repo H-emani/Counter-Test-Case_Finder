@@ -1,9 +1,9 @@
 @echo off
 
 if [%1]==[] (set /A Loop = 100) else (set /A Loop = %1)
-if [%2]==[] (set /A Comp = 1) else (set /A Comp = %2)
+if [%2]==[] (set /A doComp = 1) else (set /A doComp = %2)
 
-if %Comp% equ 1 (
+if %doComp% equ 1 (
     echo Compiling solution, gen, brute...
 
     g++ -std=c++14 gen.cpp -o gen
@@ -23,7 +23,7 @@ for /l %%x in (1, 1, %Loop%) do (
 
     rem add \f after "fc" to ignore trailing whitespaces and to convert
     rem multiple whitespaces into one space
-    fc output.out output2.out > diagnostics
+    fc output1.out output2.out > diagnostics
     if errorlevel 1 (
         set "diff=y"
         goto :break

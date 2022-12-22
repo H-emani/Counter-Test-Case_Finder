@@ -1,9 +1,9 @@
 @echo off
 
-if [%1]==[] (set /A numLoop = 100) else (set /A numLoop = %1)
-if [%2]==[] (set /A doComp = 1) else (set /A doComp = %2)
+if [%1]==[] (set /A Loop = 100) else (set /A Loop = %1)
+if [%2]==[] (set /A Comp = 1) else (set /A Comp = %2)
 
-if %doComp% equ 1 (
+if %Comp% equ 1 (
     echo Compiling solution, gen, brute...
 
     g++ -std=c++14 gen.cpp -o gen
@@ -13,34 +13,34 @@ if %doComp% equ 1 (
     echo Done compiling.
 )
 
-set "diff_found="
+set "diff="
 
-for /l %%x in (1, 1, %numLoop%) do (
+for /l %%x in (1, 1, %Loop%) do (
     echo %%x
     gen > input.in
-    solution < input.in > output.out 
+    solution < input.in > output1.out 
     brute < input.in > output2.out
 
     rem add \f after "fc" to ignore trailing whitespaces and to convert
     rem multiple whitespaces into one space
     fc output.out output2.out > diagnostics
     if errorlevel 1 (
-        set "diff_found=y"
+        set "diff=y"
         goto :break
     )
 )
 
 :break
 
-if defined diff_found (
-    echo A difference has been found.
+if defined diff (
+    echo Wrong Answer.
     echo Input: 
     type input.in
     echo.
     echo.
 
     echo Output:
-    type output.out
+    type output1.out
     echo.
 
     echo Expected:
@@ -51,5 +51,5 @@ if defined diff_found (
 )
 
 del input.in
-del output.out
+del output1.out
 del output2.out
